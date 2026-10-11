@@ -1,10 +1,9 @@
-
 from pathlib import Path
 
 import joblib
 import pandas as pd
 from fastapi import FastAPI
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 ROOT = Path(__file__).resolve().parent.parent
 MODEL_PATH = ROOT / "models" / "fraud_xgboost.joblib"
@@ -18,7 +17,6 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Only transaction types present in the PaySim dataset are accepted.
 VALID_TRANSACTION_TYPES = {
     "CASH_IN",
     "CASH_OUT",
@@ -28,28 +26,6 @@ VALID_TRANSACTION_TYPES = {
 }
 
 model = joblib.load(MODEL_PATH)
-
-
-class Transaction(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    step: int = Field(ge=0)
-    amount: float = Field(ge=0)
-    oldbalanceOrg: float = Field(ge=0)
-    newbalanceOrig: float = Field(ge=0)
-    oldbalanceDest: float = Field(ge=0)
-    newbalanceDest: float = Field(ge=0)
-    type: str
-
-    @classmethod
-    def validate_type(cls, value):
-        if value not in VALID_TRANSACTION_TYPES:
-            raise ValueError("Unsupported transaction type")
-        return value
-
-
-# Register transaction-type validation with Pydantic.
-from pydantic import field_validator
 
 
 class Transaction(BaseModel):
@@ -92,7 +68,6 @@ def health():
 @app.post("/predict")
 def predict(transaction: Transaction):
     data = transaction.model_dump()
-
     transaction_type = data.pop("type")
 
     data["origin_balance_change"] = (
@@ -103,11 +78,11 @@ def predict(transaction: Transaction):
     )
 
     for tx_type in VALID_TRANSACTION_TYPES:
-        data[f"type_{tx_type}"] = int(transaction_type == tx_type)
+        data[f"type_{tx_type}"] = int(
+            transaction_type == tx_type
+        )
 
     features = pd.DataFrame([data])
-
-    # Match the feature order used during training.
     features = features.reindex(
         columns=model.feature_names_in_,
         fill_value=0,
