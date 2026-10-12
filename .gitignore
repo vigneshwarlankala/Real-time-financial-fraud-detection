@@ -36,3 +36,6 @@ Thumbs.db
 .vscode/
 .idea/
 mlruns/
+# Local fraud alert database
+fraud_alerts.db
+
