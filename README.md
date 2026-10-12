@@ -406,9 +406,31 @@ Then visit `http://127.0.0.1:5000`.
 
 These advanced components are planned improvements and should not be considered implemented until they are added and tested.
 
+## Data Drift Monitoring
 
+The project uses Evidently AI to compare transaction features across two time periods and generate a data drift report.
 
-\## Disclaimer
+### Run the Drift Monitor
+
+Activate the project virtual environment, then run:
+
+```powershell
+python src/drift_monitor.py
+```
+
+The script compares transactions with `step <= 500` against transactions with `step > 500`, excluding the `isFraud` target column from feature-drift analysis.
+
+The generated HTML report is saved to:
+
+```text
+reports/data_drift_report.html
+```
+
+Open this file in a browser to inspect the drift results.
+
+**Note:** A detected feature drift does not necessarily mean fraud has increased or model performance has declined. Further investigation is required.
+
+## Disclaimer
 
 
 
