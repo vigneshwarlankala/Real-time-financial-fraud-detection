@@ -1,0 +1,2 @@
+kafka-python==3.0.11
+evidently==0.7.23
