@@ -27,7 +27,7 @@ except ModuleNotFoundError:
 
 API_URL = os.getenv(
     "API_URL",
-    "https://fraud-detection-api-er42.onrender.com",
+    "http://127.0.0.1:8002",
 ).rstrip("/")
 
 st.set_page_config(
@@ -653,3 +653,142 @@ st.caption(
     "Educational demonstration only. Not intended for real-world "
     "financial decisions or production fraud prevention."
 )
+# --------------------------------------------------
+# API-backed Analyst Case Management
+# --------------------------------------------------
+
+st.divider()
+st.subheader("API-Backed Analyst Case Management")
+
+try:
+    cases_response = requests.get(
+        f"{API_URL}/cases",
+        timeout=10,
+    )
+    cases_response.raise_for_status()
+    api_cases = cases_response.json().get("cases", [])
+
+    if api_cases:
+        st.dataframe(
+            [
+                {
+                    "Case ID": case["case_id"],
+                    "Transaction ID": case["transaction_id"],
+                    "Fraud Probability": (
+                        f'{case["fraud_probability"] * 100:.2f}%'
+                    ),
+                    "Risk": case["risk_level"],
+                    "Status": case["status"],
+                    "Analyst Notes": case["analyst_notes"],
+                }
+                for case in api_cases
+            ],
+            use_container_width=True,
+            hide_index=True,
+        )
+
+        case_options = {
+            f'Case #{case["case_id"]} — {case["transaction_id"]}': case
+            for case in api_cases
+        }
+
+        selected_case_label = st.selectbox(
+            "Select an API case to review",
+            options=list(case_options.keys()),
+            key="api_case_selection",
+        )
+        selected_case = case_options[selected_case_label]
+
+        with st.form("api_case_review_form"):
+            new_api_status = st.selectbox(
+                "Investigation status",
+                options=[
+                    "OPEN",
+                    "IN_REVIEW",
+                    "CONFIRMED_FRAUD",
+                    "FALSE_POSITIVE",
+                    "CLOSED",
+                ],
+                index=[
+                    "OPEN",
+                    "IN_REVIEW",
+                    "CONFIRMED_FRAUD",
+                    "FALSE_POSITIVE",
+                    "CLOSED",
+                ].index(selected_case["status"]),
+            )
+
+            new_api_notes = st.text_area(
+                "Investigation notes",
+                value=selected_case["analyst_notes"],
+                max_chars=5000,
+            )
+
+            save_api_case = st.form_submit_button(
+                "Save API Case Review",
+                type="primary",
+            )
+
+        if save_api_case:
+            update_response = requests.patch(
+                f'{API_URL}/cases/{selected_case["case_id"]}',
+                json={
+                    "status": new_api_status,
+                    "analyst_notes": new_api_notes,
+                },
+                timeout=10,
+            )
+            update_response.raise_for_status()
+            st.success("API case updated successfully.")
+            st.rerun()
+
+    else:
+        st.info("No API investigation cases exist yet.")
+
+    with st.expander("Create an API investigation case"):
+        with st.form("create_api_case_form"):
+            transaction_id = st.text_input(
+                "Transaction ID",
+                placeholder="Enter a unique transaction identifier",
+            )
+            fraud_probability = st.number_input(
+                "Fraud probability",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.95,
+                step=0.01,
+            )
+            risk_level = st.selectbox(
+                "Risk level",
+                options=["LOW", "MEDIUM", "HIGH"],
+                index=2,
+            )
+            create_api_case = st.form_submit_button(
+                "Create Investigation Case",
+            )
+
+        if create_api_case:
+            if not transaction_id.strip():
+                st.warning("Enter a transaction ID.")
+            else:
+                create_response = requests.post(
+                    f"{API_URL}/cases",
+                    json={
+                        "transaction_id": transaction_id.strip(),
+                        "fraud_probability": fraud_probability,
+                        "risk_level": risk_level,
+                    },
+                    timeout=10,
+                )
+
+                if create_response.status_code == 409:
+                    st.warning(
+                        "A case already exists for this transaction ID."
+                    )
+                else:
+                    create_response.raise_for_status()
+                    st.success("Investigation case created.")
+                    st.rerun()
+
+except requests.RequestException as exc:
+    st.error(f"Could not access analyst case API: {exc}")

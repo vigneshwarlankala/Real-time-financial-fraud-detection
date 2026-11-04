@@ -39,3 +39,52 @@ mlruns/
 # Local fraud alert database
 fraud_alerts.db
 
+
+# Generic Feast Quickstart template
+/possible_badger/
+
+# Trained GNN model artifact
+/models/*.pt
+
+# Historical fraud-ring detector snapshots
+/src/fraud_ring_detector_backup.py
+/src/fraud_ring_detector_before_temporal_validation.py
+
+# Local Feast databases and generated data
+feature_store/**/data/*.db
+feature_store/**/*.db-shm
+feature_store/**/*.db-wal
+feature_store/**/online_store.db
+
+# Large generated fraud-ring analysis outputs
+/reports/fraud_rings/*.csv
+/reports/fraud_rings/*results*.json
+!/reports/fraud_rings/fraud_ring_evaluation*.json
+!/reports/fraud_rings/temporal_bonus_comparison.csv
+
+# SQLite databases and backups
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# Generated smoke-test and local drift reports
+/reports/*smoke*.json
+/reports/*drift*.json
+/reports/analyst_cases_k8s_backup.db
+
+# Python temporary files
+*.tmp
+*.bak
+
+# Accidental Git diff file
+/rcstreamingkafka_consumer.py*
+
+# Local streaming prediction logs
+/reports/streaming/*.csv
+
+# Exclude local smoke-test data and reports
+/tests/drift_current_smoke.csv
+/tests/drift_reference_smoke.csv
+/reports/fraud_rings/*quick_smoke*.json

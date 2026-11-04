@@ -1,0 +1,9 @@
+
+project: fraud_detection
+registry: "D:/FraudDetectionData/feature_repo/registry.db"
+provider: local
+online_store:
+  type: sqlite
+  path: "D:/FraudDetectionData/feature_repo/online_store.db"
+entity_key_serialization_version: 3
+

@@ -1,0 +1,7 @@
+{
+  "fraud_labeled_transactions_in_sample": 147,
+  "candidate_groups": 9643,
+  "groups_with_fraud_labeled_edges_to_recipient": 111,
+  "groups_whose_recipient_has_fraud_labeled_incoming_edge": 111,
+  "note": "Fraud labels are used only after candidate generation. Shared recipients and label overlap do not prove a fraud ring. The screening score is not a calibrated probability. Temporal persistence is an exploratory heuristic."
+}

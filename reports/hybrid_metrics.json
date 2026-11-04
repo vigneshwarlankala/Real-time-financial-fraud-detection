@@ -1,0 +1,16 @@
+{
+  "xgboost_model_loaded": true,
+  "gnn_checkpoint_loaded": true,
+  "gnn_inference_ready": true,
+  "gnn_model_type": "GraphSAGE",
+  "gnn_target": "account-level label: account has at least one fraudulent outgoing transaction in sampled data",
+  "sample_account_id": "C1231006815",
+  "sample_account_risk": 0.506315,
+  "integration_status": "XGBoost and real GNN account-risk inference loaded successfully.",
+  "limitations": [
+    "The sample GNN covers a subset of PaySim transactions.",
+    "An account absent from the sampled graph has no GNN score.",
+    "The blended score requires validation and calibration.",
+    "This module does not yet score a transaction end-to-end."
+  ]
+}

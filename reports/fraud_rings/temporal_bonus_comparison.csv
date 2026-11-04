@@ -1,0 +1,7 @@
+version,top_k,matched_candidate_groups,match_rate
+Baseline,100,3,0.03
+Temporal bonus,100,4,0.04
+Baseline,500,15,0.03
+Temporal bonus,500,28,0.056
+Baseline,1000,22,0.022
+Temporal bonus,1000,38,0.038
