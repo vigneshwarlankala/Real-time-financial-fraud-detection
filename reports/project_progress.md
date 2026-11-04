@@ -1,49 +1,50 @@
-﻿# AIML-01 Fraud Detection — Progress Report
+﻿# AIML-01 — Real-Time Financial Fraud Detection Platform
 
-**Last updated:** 25 October 2026  
-**Estimated completion:** 75%  
-**Today's target:** 85%  
-**Project:** Real-Time Financial Fraud Detection Platform
+**Last updated:** 4 November 2026
 
-## Completed and verified
+## Verified deliverables
 
 - PaySim dataset prepared: 6,362,620 transactions.
-- XGBoost model trained and saved.
+- XGBoost fraud detection model trained and saved.
 - Model evaluation report saved; PR-AUC: 0.9651.
-- FastAPI prediction endpoint tested.
-- Streamlit fraud-risk dashboard deployed.
+- FastAPI prediction API deployed and health-checked.
+- Live prediction endpoint tested successfully.
+- Streamlit dashboard deployed and confirmed working.
+- Dashboard-to-API connection verified by user.
 - Kafka producer/consumer implementation available.
-- MLflow experiment tracking configured and verified.
+- MLflow experiment tracking configured.
 - GNN model artifact and fraud-ring detection implementation available.
-- Feast feature-view definitions added and integration tests passed.
-- Drift-monitoring script implemented and smoke-tested.
-- Full automated test suite: 15 tests passed.
-- Real-data drift report generated from two 100,000-row samples.
+- Feast feature-view definitions and integration tests available.
+- Drift-monitoring implementation smoke-tested.
+- Real-data drift report generated.
+- GitHub repository updated with deployment configuration.
 
-## Latest drift-monitoring result
+## Deployment links
 
-| Feature | PSI | Status |
-|---|---:|---|
-| amount | 0.037584 | No major drift |
-| oldbalanceOrg | 0.004395 | No major drift |
-| newbalanceOrig | 0.007958 | No major drift |
-| oldbalanceDest | 0.055412 | No major drift |
-| newbalanceDest | 0.065511 | No major drift |
+- Dashboard: https://aiml-01-fraud-dashboard.onrender.com
+- API: https://aiml-01-fraud-detection.onrender.com
+- API documentation: https://aiml-01-fraud-detection.onrender.com/docs
+- GitHub: https://github.com/vigneshwarlankala/Real-time-financial-fraud-detection
 
-Threshold: 0.2  
-Overall status: `no_major_drift`
+## Model evaluation
 
-Report: `reports/real_data_drift_report.json`
+- Precision: 0.34
+- Recall: 0.99
+- F1-score: 0.51
+- PR-AUC: 0.9651
 
-## Remaining major work
+## Drift monitoring
 
-- Verify production Feast online feature retrieval safely.
-- Complete analyst case review, status updates, and feedback workflow.
-- Verify fraud-ring detection and streaming behavior end to end.
-- Add Kubernetes deployment configuration.
-- Finish README, architecture documentation, test evidence, and demo materials.
-- Run final integration and deployment checks.
+The latest recorded real-data drift report showed no major drift across the five monitored features, using a PSI threshold of 0.2.
 
-## Progress estimate
+## Remaining verification
 
-75% is a working estimate based on implemented and tested components, not an official evaluation score. Increase it only when additional deliverables are implemented and verified.
+- Verify production Feast online feature retrieval.
+- Verify fraud-ring detection and streaming end to end.
+- Verify analyst case-review workflow.
+- Review Kubernetes deployment configuration.
+- Complete README, architecture documentation, and final demo evidence.
+
+## Completion note
+
+The API and dashboard deployments have been confirmed working. Other advanced components are recorded as implemented or tested where evidence is available; they should not be described as fully production-verified without further integration testing.

@@ -1,438 +1,59 @@
-\# Real-Time Financial Fraud Detection Platform
+﻿# Real-Time Financial Fraud Detection Platform
 
+An AI/ML internship project for identifying potentially fraudulent financial transactions.
 
+## Live Demo
+- Dashboard: https://aiml-01-fraud-dashboard.onrender.com
+- API: https://aiml-01-fraud-detection.onrender.com
+- API documentation: https://aiml-01-fraud-detection.onrender.com/docs
 
-An AI/ML project that detects potentially fraudulent financial transactions using machine learning and provides a REST API and interactive dashboard for transaction risk assessment.
+## Dataset
+PaySim: 6,362,620 transactions, including 8,213 fraudulent transactions.
 
+## Model
+- Algorithm: XGBoost
+- Precision: 0.34
+- Recall: 0.99
+- F1-score: 0.51
+- PR-AUC: 0.9651
 
+## Technology
+Python, Pandas, NumPy, XGBoost, FastAPI, Streamlit, MLflow, Kafka, Feast, Docker and Render.
 
-\## Project Overview
+## Architecture
+1. Transaction preprocessing and feature engineering.
+2. XGBoost model training and evaluation.
+3. FastAPI prediction service.
+4. Streamlit analyst dashboard.
+5. Supporting drift-monitoring, streaming and fraud-ring modules.
 
+## Run Locally
+Create the environment:
+py -3.11 -m venv .venv
 
+Activate it:
+.\.venv\Scripts\Activate.ps1
 
-This project uses the PaySim synthetic financial transaction dataset to train an XGBoost classification model. The model estimates the probability that a transaction is fraudulent and classifies its risk level.
+Install dependencies:
+pip install -r requirements.txt
 
-
-
-\*\*Important:\*\* This is an educational project. Predictions are model estimates and must not be treated as confirmed fraud.
-
-
-
-\## Features
-
-
-
-\- Transaction data preprocessing and feature engineering
-
-\- Analysis of severe class imbalance
-
-\- XGBoost fraud classification
-
-\- Imbalanced classification using class weights
-
-\- Model evaluation using Precision, Recall, PR-AUC, and a confusion matrix
-
-\- MLflow experiment tracking
-
-\- FastAPI prediction service
-
-\- Interactive Streamlit dashboard
-
-\- Automated API tests
-
-
-
-\## Technology Stack
-
-
-
-\- Python 3.11
-
-\- Pandas and NumPy
-
-\- Scikit-learn
-
-\- XGBoost
-
-\- MLflow
-
-\- FastAPI and Uvicorn
-
-\- Streamlit and Plotly
-
-\- Pytest
-
-
-
-\## Dataset
-
-
-
-The project uses the PaySim synthetic mobile-money transaction dataset.
-
-
-
-The original dataset contains approximately 6.36 million transactions. The target column is `isFraud`, where `1` represents a fraudulent transaction and `0` represents a legitimate transaction.
-
-
-
-The dataset is not included in this repository by default because of its size. Obtain it from the original dataset source and place the CSV file at:
-
-
-
-`data/raw/transactions.csv`
-
-
-
-\## Project Structure
-
-
-
-```text
-
-AIML-01-Fraud-Detection/
-
-├── api/
-
-│   └── main.py
-
-├── dashboard/
-
-│   └── app.py
-
-├── data/
-
-│   ├── raw/
-
-│   └── processed/
-
-├── models/
-
-│   └── fraud\_xgboost.joblib
-
-├── reports/
-
-│   └── model\_metrics.json
-
-├── src/
-
-│   ├── prepare\_data.py
-
-│   └── train\_model.py
-
-├── tests/
-
-│   └── test\_api.py
-
-├── README.md
-
-└── .gitignore
-
-```
-
-
-
-\## Setup Instructions
-
-
-
-\### 1. Clone the repository
-
-
-
-```bash
-
-git clone YOUR\_GITHUB\_REPOSITORY\_URL
-
-cd AIML-01-Fraud-Detection
-
-```
-
-
-
-Replace `YOUR\_GITHUB\_REPOSITORY\_URL` with the actual repository URL.
-
-
-
-\### 2. Create a virtual environment
-
-
-
-Windows PowerShell:
-
-
-
-```powershell
-
-python -m venv .venv
-
-.\\.venv\\Scripts\\Activate.ps1
-
-```
-
-
-
-\### 3. Install dependencies
-
-
-
-Install the required packages:
-
-
-
-```powershell
-
-python -m pip install pandas numpy scikit-learn xgboost joblib fastapi "uvicorn\[standard]" streamlit plotly pytest requests mlflow httpx2
-
-```
-
-
-
-\### 4. Prepare the dataset
-
-
-
-After placing the dataset at `data/raw/transactions.csv`, run:
-
-
-
-```powershell
-
-python src/prepare\_data.py
-
-```
-
-
-
-\### 5. Train the model
-
-
-
-```powershell
-
-python src/train\_model.py
-
-```
-
-
-
-The trained model and evaluation metrics are saved in the `models/` and `reports/` directories.
-
-
-
-\## Run the Application
-
-
-
-\### Start the API
-
-
-
-Open a terminal in the project root and run:
-
-
-
-```powershell
-
+Start the API:
 python -m uvicorn api.main:app --reload
 
-```
-
-
-
-API base URL: `http://127.0.0.1:8000`
-
-
-
-Interactive API documentation: `http://127.0.0.1:8000/docs`
-
-
-
-Health endpoint: `http://127.0.0.1:8000/health`
-
-
-
-\### Start the dashboard
-
-
-
-Open another terminal, activate the virtual environment, and run:
-
-
-
-```powershell
-
-.\\.venv\\Scripts\\Activate.ps1
-
-python -m streamlit run dashboard/app.py
-
-```
-
-
-
-The dashboard will be available at `http://localhost:8501`.
-
-
-
-\### Run automated tests
-
-
-
-```powershell
-
-python -m pytest tests/test\_api.py -v
-
-```
-
-
-
-\## Model Evaluation
-
-
-
-The initial evaluation on a stratified random holdout set produced these results:
-
-
-
-| Metric | Result |
-
-|---|---:|
-
-| Average Precision (PR-AUC) | 0.9651 |
-
-| Fraud precision | 0.3414 |
-
-| Fraud recall | 0.9915 |
-
-| True negatives | 1,267,738 |
-
-| False positives | 3,143 |
-
-| False negatives | 14 |
-
-| True positives | 1,629 |
-
-
-
-These results are from the initial experimental setup. The dataset is highly imbalanced, so accuracy alone is not an appropriate evaluation measure.
-
-
-
-The random split and engineered balance-change features may produce optimistic results. Further validation, threshold tuning, leakage analysis, and testing on unseen data are needed before drawing conclusions about real-world performance.
-
-
-
-\## API Example
-
-
-
-Send a POST request to `/predict` with a JSON transaction:
-
-
-
-```json
-
-{
-
-&#x20; "step": 1,
-
-&#x20; "amount": 181,
-
-&#x20; "oldbalanceOrg": 181,
-
-&#x20; "newbalanceOrig": 0,
-
-&#x20; "oldbalanceDest": 0,
-
-&#x20; "newbalanceDest": 0,
-
-&#x20; "type": "TRANSFER"
-
-}
-
-```
-
-
-
-The response includes the estimated fraud probability, binary prediction, risk level, and classification threshold.
-
-
-
-\## Experiment Tracking
-
-
-
-MLflow is used to record model parameters, evaluation metrics, and experiment runs.
-
-
-
-To open the local MLflow interface, run:
-
-
-
-```powershell
-
-python -m mlflow ui --backend-store-uri sqlite:///mlflow.db
-
-```
-
-
-
-Then visit `http://127.0.0.1:5000`.
-
-
-
-\## Limitations and Future Improvements
-
-
-
-\- Add streaming transaction ingestion using Apache Kafka.
-
-\- Introduce feature management with Feast.
-
-\- Explore graph-based fraud detection with PyTorch Geometric.
-
-\- Add drift monitoring using Evidently AI.
-
-\- Implement feedback-driven retraining workflows.
-
-\- Improve threshold selection and evaluate temporal generalization.
-
-\- Add containerization and Kubernetes deployment.
-
-\- Strengthen monitoring, security, and production testing.
-
-
-
-These advanced components are planned improvements and should not be considered implemented until they are added and tested.
-
-## Data Drift Monitoring
-
-The project uses Evidently AI to compare transaction features across two time periods and generate a data drift report.
-
-### Run the Drift Monitor
-
-Activate the project virtual environment, then run:
-
-```powershell
-python src/drift_monitor.py
-```
-
-The script compares transactions with `step <= 500` against transactions with `step > 500`, excluding the `isFraud` target column from feature-drift analysis.
-
-The generated HTML report is saved to:
-
-```text
-reports/data_drift_report.html
-```
-
-Open this file in a browser to inspect the drift results.
-
-**Note:** A detected feature drift does not necessarily mean fraud has increased or model performance has declined. Further investigation is required.
-
-## Disclaimer
-
-
-
-This project is for educational and portfolio purposes only. Predictions are estimates based on synthetic data and should not be used as the sole basis for real financial decisions.
-
+Start the dashboard in another terminal:
+python -m streamlit run dashboard\app.py
+
+## Repository Structure
+- api/ — API application
+- dashboard/ — Streamlit dashboard
+- data/ — Dataset files
+- models/ — Model artifacts
+- reports/ — Metrics and monitoring reports
+- src/ — ML source code
+- tests/ — Automated tests
+
+## Limitations
+This is an educational demonstration, not a certified financial security system. A high-risk prediction does not prove fraud. Human review is required before real-world action.
+
+## Project Status
+The API and dashboard have been deployed and manually verified. See reports/project_progress.md for further project status and verification details.
