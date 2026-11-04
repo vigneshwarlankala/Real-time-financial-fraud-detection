@@ -6,3 +6,13 @@
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /health
+
+  - type: web
+    name: aiml-01-fraud-dashboard
+    runtime: docker
+    plan: free
+    dockerfilePath: ./dashboard/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: API_URL
+        value: https://aiml-01-fraud-detection.onrender.com
