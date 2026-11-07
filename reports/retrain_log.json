@@ -1,0 +1,15 @@
+[
+  {
+    "timestamp_utc": "2026-11-07T15:53:06.602999+00:00",
+    "overall_drift_status": "potential_drift",
+    "retraining_triggered": true,
+    "retraining_succeeded": true,
+    "feature_psi": {
+      "amount": 11.05236,
+      "oldbalanceOrg": 0.0,
+      "newbalanceOrig": 11.05236,
+      "oldbalanceDest": 0.0,
+      "newbalanceDest": 11.05236
+    }
+  }
+]

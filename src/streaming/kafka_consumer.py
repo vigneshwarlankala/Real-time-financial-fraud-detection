@@ -10,7 +10,7 @@ from kafka import KafkaConsumer
 
 KAFKA_SERVER = "localhost:9092"
 TOPIC_NAME = "fraud-transactions"
-API_URL = "https://fraud-detection-api-er42.onrender.com/predict"
+API_URL = "http://localhost:8001/predict"
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RESULTS_FILE = (
