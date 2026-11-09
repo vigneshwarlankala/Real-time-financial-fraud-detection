@@ -27,7 +27,7 @@ except ModuleNotFoundError:
 
 API_URL = os.getenv(
     "API_URL",
-    "http://127.0.0.1:8002",
+    "http://127.0.0.1:8001",
 ).rstrip("/")
 
 st.set_page_config(
@@ -792,3 +792,4 @@ try:
 
 except requests.RequestException as exc:
     st.error(f"Could not access analyst case API: {exc}")
+
